@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
 import Survey from './pages/Survey';
+import ResearchGrants from './pages/ResearchGrants';
 import './App.css';
 
 function LandingPage() {
@@ -96,6 +97,7 @@ function SignInPage() {
 function WelcomePage() {
   const [username, setUsername] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
@@ -114,6 +116,10 @@ function WelcomePage() {
     setUsername(params.get('username') || 'User');
   }, []);
 
+  const handleResearchGrants = () => {
+    navigate('/research-grants');
+  };
+
   return (
     <div className="welcome-page">
       <div className="logo-container">
@@ -125,7 +131,7 @@ function WelcomePage() {
       </div>
       <h1>Welcome, {username}!</h1>
       <div className="button-container">
-        <button className="action-button">Research Grants</button>
+        <button className="action-button" onClick={handleResearchGrants}>Research Grants</button>
         <button className="action-button">Find Groups</button>
       </div>
     </div>
@@ -140,6 +146,7 @@ function App() {
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/survey" element={<Survey />} />
         <Route path="/welcome" element={<WelcomePage />} />
+        <Route path="/research-grants" element={<ResearchGrants />} />
       </Routes>
     </Router>
   );

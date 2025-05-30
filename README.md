@@ -1,74 +1,108 @@
-# Team Project Platform (Working Title)
+# FundBridge
 
-This is a full-stack web application to help users find project teams and connect with relevant grants. The platform uses AI (mocked for now) to match users with compatible teams and generate grant application drafts.
+FundBridge is a web application that helps researchers find and match with relevant research grants and potential collaborators. The platform uses AI to match researchers with suitable grants based on their interests and project goals.
 
 ## Features
-- **Team Matching**: Find the perfect team based on your interests and skills
-- **Project Exploration**: Browse existing projects and join teams
-- **Grant Matching**: Get AI-powered grant recommendations for your project
-- **Grant Writing Assistant**: Generate grant application drafts using AI
-- **Mobile Responsive**: Works seamlessly on all devices
 
-## Tech Stack
-- **Frontend**: React + Tailwind CSS
-- **Backend**: Firebase (Authentication, Firestore) [integration-ready, currently using mock data]
-- **AI Integration**: OpenAI API (simulated for demo)
-- **Tooling**: Vite, React Router
+- **User Registration & Authentication**: Secure sign-up and sign-in functionality
+- **Interest Survey**: Comprehensive survey to understand researcher's interests and goals
+- **Grant Matching**: AI-powered grant matching system that recommends relevant research grants
+- **Group Finding**: Platform to connect with potential research collaborators
+- **Dark Mode Support**: Automatic dark/light mode based on system preferences
 
-## Getting Started
+## Prerequisites
 
-### 1. Clone the repository
+- Node.js (v16 or higher)
+- Python 3.x
+- npm or yarn
+
+## Installation
+
+1. Clone the repository:
 ```bash
-git clone <REPO_URL>
+git clone <repository-url>
 cd unite_projects
 ```
 
-### 2. Install dependencies
+2. Install Python dependencies:
+```bash
+pip install sentence-transformers
+```
+
+3. Install Node.js dependencies:
 ```bash
 npm install
 ```
 
-### 3. Start the development server
+## Project Structure
+
+```
+unite_projects/
+├── ai-models/
+│   ├── match_grants.py
+│   └── sample_user.json
+├── public/
+│   ├── logo_dark.png
+│   └── logo_light.png
+├── src/
+│   ├── pages/
+│   │   ├── Survey.jsx
+│   │   └── ResearchGrants.jsx
+│   ├── styles/
+│   │   └── ResearchGrants.css
+│   ├── App.jsx
+│   └── App.css
+├── server.js
+└── package.json
+```
+
+## Running the Application
+
+1. Start the development servers:
 ```bash
 npm run dev
 ```
+This will start both:
+- Vite development server (frontend) on port 5173
+- Express server (backend) on port 3001
 
-The app will be available at [http://localhost:5173](http://localhost:5173).
-
-### 4. (Optional) Lint and format code
-```bash
-npm run lint
+2. Open your browser and navigate to:
+```
+http://localhost:5173
 ```
 
-## Project Structure
-```
-/ (project root)
-├── src/
-│   ├── components/     # Reusable UI components
-│   ├── pages/          # Page components
-│   ├── data/           # Mock data and types
-│   ├── utils/          # Utility functions and AI integration
-│   ├── contexts/       # React contexts (if needed)
-│   └── App.jsx         # Main application component
-├── public/             # Static assets
-├── index.html          # Main HTML file
-├── package.json        # Project metadata and scripts
-├── .gitignore          # Files and folders to ignore in git
-└── README.md           # Project documentation
-```
+## How It Works
+
+1. **Registration**: New users complete a survey to provide information about their research interests and goals.
+
+2. **Grant Matching**: When a user clicks on "Research Grants":
+   - The system runs the `match_grants.py` script
+   - The script uses AI to match the user's profile with relevant grants
+   - Results are displayed in a user-friendly card layout
+
+3. **Grant Details**: Each grant card shows:
+   - Grant name
+   - Agency
+   - Open date
+   - Match score
+   - Description
+   - Link to full grant details
+
+## Development
+
+- Frontend: React with Vite
+- Backend: Express.js
+- AI Matching: Python with sentence-transformers
+- Styling: CSS with responsive design
 
 ## Contributing
-1. Pull the latest changes from `main` before starting new work.
-2. Create a new branch for your feature or fix:
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-3. Make your changes and commit:
-   ```bash
-   git add .
-   git commit -m "Describe your changes"
-   ```
-4. Push your branch and open a Pull Request on GitHub.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
 ## License
-MIT (or specify your team's preferred license)
+
+This project is licensed under the MIT License - see the LICENSE file for details.
