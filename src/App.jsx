@@ -58,6 +58,8 @@ function SignInPage() {
     e.preventDefault();
     // Handle sign in logic here
     console.log('Signing in with:', username, password);
+    // Redirect to welcome page after successful sign in
+    window.location.href = `/welcome?username=${username}`;
   };
 
   return (
@@ -91,6 +93,45 @@ function SignInPage() {
   );
 }
 
+function WelcomePage() {
+  const [username, setUsername] = useState('');
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    setIsDarkMode(mediaQuery.matches);
+
+    const handleChange = (e) => {
+      setIsDarkMode(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setUsername(params.get('username') || 'User');
+  }, []);
+
+  return (
+    <div className="welcome-page">
+      <div className="logo-container">
+        {isDarkMode ? (
+          <img src="/logo_dark.png" alt="Dark Logo" className="logo" />
+        ) : (
+          <img src="/logo_light.png" alt="Light Logo" className="logo" />
+        )}
+      </div>
+      <h1>Welcome, {username}!</h1>
+      <div className="button-container">
+        <button className="action-button">Research Grants</button>
+        <button className="action-button">Find Groups</button>
+      </div>
+    </div>
+  );
+}
+
 function App() {
   return (
     <Router>
@@ -98,6 +139,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/survey" element={<Survey />} />
+        <Route path="/welcome" element={<WelcomePage />} />
       </Routes>
     </Router>
   );
