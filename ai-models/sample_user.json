@@ -1,0 +1,23 @@
+{
+    "name": "Alice Kim",
+    "email": "alice@example.com",
+    "location": "USA",
+    "role": "Student",
+    "primary_skill": "Project management",
+    "has_collab_exp": true,
+    "past_project": "Led a team developing a mental health app.",
+    "wants_to_lead": "Maybe",
+    "proposing_project": true,
+    "project_title": "MindMatch",
+    "project_goal": "An AI-based mental health matching platform.",
+    "funding_amount": "$5,000–$25,000",
+    "ideal_teammate_trait": "Strong backend developer with communication skills",
+    "interest_area": "AI / Data Science",
+    "problem_focus": "Making mental health tools accessible to low-income communities.",
+    "weekly_commitment": "5–10",
+    "timezone": "PST",
+    "work_style": "Structured / deadline-driven",
+    "funding_importance": "Essential",
+    "grant_experience": true
+  }
+  
