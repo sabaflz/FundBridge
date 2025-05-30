@@ -242,7 +242,7 @@ export default function Survey() {
       <div className="min-h-screen bg-gray-50 flex flex-col">
         <nav className="w-full bg-white shadow-sm border-b border-gray-100">
           <div className="max-w-xl mx-auto px-4 py-4">
-            <span className="text-2xl font-bold text-teal-800">GrantLink</span>
+            <span className="text-2xl font-bold text-teal-800">FundBridge</span>
           </div>
         </nav>
         <div className="flex flex-1 items-center justify-center">
@@ -350,7 +350,7 @@ export default function Survey() {
       {/* Nav Bar */}
       <nav className="w-full bg-white shadow-sm border-b border-gray-100">
         <div className="max-w-xl mx-auto px-4 py-4">
-          <span className="text-2xl font-bold text-teal-800">GrantLink</span>
+          <span className="text-2xl font-bold text-teal-800">FundBridge</span>
         </div>
       </nav>
       {/* Center the form */}

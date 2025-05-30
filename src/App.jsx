@@ -1,35 +1,106 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import Survey from './pages/Survey';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+function LandingPage() {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    setIsDarkMode(mediaQuery.matches);
+
+    const handleChange = (e) => {
+      setIsDarkMode(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="landing-page">
+      <div className="logo-container">
+        {isDarkMode ? (
+          <img src="/logo_dark.png" alt="Dark Logo" className="logo" />
+        ) : (
+          <img src="/logo_light.png" alt="Light Logo" className="logo" />
+        )}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <h1>Welcome to FundBridge</h1>
+      <p className="tagline">Match. Collaborate. Fund.</p>
+      <div className="button-container">
+        <Link to="/signin" className="signin-button">Sign In</Link>
+        <Link to="/survey" className="register-button">Register</Link>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+function SignInPage() {
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    setIsDarkMode(mediaQuery.matches);
+
+    const handleChange = (e) => {
+      setIsDarkMode(e.matches);
+    };
+
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    // Handle sign in logic here
+    console.log('Signing in with:', username, password);
+  };
+
+  return (
+    <div className="signin-page">
+      <div className="logo-container">
+        {isDarkMode ? (
+          <img src="/logo_dark.png" alt="Dark Logo" className="logo" />
+        ) : (
+          <img src="/logo_light.png" alt="Light Logo" className="logo" />
+        )}
+      </div>
+      <h2>Sign In to FundBridge</h2>
+      <form onSubmit={handleSignIn}>
+        <input
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Sign In</button>
+      </form>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signin" element={<SignInPage />} />
+        <Route path="/survey" element={<Survey />} />
+      </Routes>
+    </Router>
+  );
+}
+
+export default App;
