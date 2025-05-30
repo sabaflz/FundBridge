@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from 'react-router-dom';
 import Survey from './pages/Survey';
 import ResearchGrants from './pages/ResearchGrants';
+import FindGroups from './pages/FindGroups';
+import Navbar from './components/Navbar';
 import './App.css';
 
 function LandingPage() {
@@ -116,10 +118,6 @@ function WelcomePage() {
     setUsername(params.get('username') || 'User');
   }, []);
 
-  const handleResearchGrants = () => {
-    navigate('/research-grants');
-  };
-
   return (
     <div className="welcome-page">
       <div className="logo-container">
@@ -131,8 +129,12 @@ function WelcomePage() {
       </div>
       <h1>Welcome, {username}!</h1>
       <div className="button-container">
-        <button className="action-button" onClick={handleResearchGrants}>Research Grants</button>
-        <button className="action-button">Find Groups</button>
+        <button className="action-button" onClick={() => navigate('/research-grants')}>
+          Research Grants
+        </button>
+        <button className="action-button" onClick={() => navigate('/find-groups')}>
+          Find Groups
+        </button>
       </div>
     </div>
   );
@@ -141,13 +143,17 @@ function WelcomePage() {
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/signin" element={<SignInPage />} />
-        <Route path="/survey" element={<Survey />} />
-        <Route path="/welcome" element={<WelcomePage />} />
-        <Route path="/research-grants" element={<ResearchGrants />} />
-      </Routes>
+      <div className="app">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/signin" element={<SignInPage />} />
+          <Route path="/survey" element={<Survey />} />
+          <Route path="/welcome" element={<WelcomePage />} />
+          <Route path="/research-grants" element={<ResearchGrants />} />
+          <Route path="/find-groups" element={<FindGroups />} />
+        </Routes>
+      </div>
     </Router>
   );
 }

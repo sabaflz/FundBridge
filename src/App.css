@@ -1,8 +1,61 @@
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  width: 100%;
+}
+
+.landing-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.landing-page .logo-container {
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.landing-page .logo {
+  width: 300px;
+  height: auto;
+  padding: 0.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+
+.landing-page .logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+
+.landing-page h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: #e2e8f0;
+}
+
+.landing-page .tagline {
+  font-size: 1.25rem;
+  color: #a0aec0;
+  margin-bottom: 2rem;
+}
+
+.landing-page .button-container {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
 }
 
 .logo {
@@ -180,4 +233,30 @@
 
 .action-button:hover {
   background-color: #0056b3;
+}
+
+.coming-soon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+  font-size: 1.5rem;
+  color: #666;
+}
+
+/* Update existing page styles to work with navbar */
+.welcome-page,
+.research-grants-page,
+.signin-page {
+  padding-top: 5rem;
+  min-height: calc(100vh - 5rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Ensure the logo container is properly sized */
+.logo-container {
+  margin-bottom: 2rem;
 }

@@ -9,34 +9,25 @@ function ResearchGrants() {
   useEffect(() => {
     const fetchGrants = async () => {
       try {
-        // Fetch both grants and their details
-        const [grantsResponse, detailsResponse] = await Promise.all([
-          fetch('/data/grants.json'),
-          fetch('/data/grant_details_demo.json')
-        ]);
-
-        if (!grantsResponse.ok || !detailsResponse.ok) {
-          throw new Error('Failed to fetch grants data');
+        // First, run the match_grants.py script
+        const response = await fetch('http://localhost:3001/api/run-match-grants', {
+          method: 'POST',
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'Failed to run match_grants.py');
         }
 
+        // Then fetch the updated grants data
+        const grantsResponse = await fetch('/data/matched_grants.json');
+        if (!grantsResponse.ok) {
+          throw new Error('Failed to fetch grants data');
+        }
+        
         const grantsData = await grantsResponse.json();
-        const detailsData = await detailsResponse.json();
-
-        // Combine grants with their details
-        const combinedGrants = grantsData.slice(0, 10).map(grant => {
-          const details = detailsData.find(d => d.id === grant.id) || {};
-          return {
-            id: grant.id,
-            name: grant.title,
-            agency: grant.agency,
-            openDate: grant.openDate,
-            description: details.description || 'No description available',
-            link: `https://www.grants.gov/view-opportunity.html?oppId=${grant.id}`,
-            score: Math.random() * 0.3 + 0.7 // Temporary random score between 0.7 and 1.0
-          };
-        });
-
-        setGrants(combinedGrants);
+        setGrants(grantsData);
         setLoading(false);
       } catch (err) {
         console.error('Error:', err);
@@ -52,7 +43,7 @@ function ResearchGrants() {
     return (
       <div className="loading">
         <h2>Loading Grants</h2>
-        <p>Please wait while we load the available grants...</p>
+        <p>Please wait while we fetch the latest research grants...</p>
       </div>
     );
   }
@@ -69,7 +60,7 @@ function ResearchGrants() {
 
   return (
     <div className="research-grants-page">
-      <h1>Research Grants</h1>
+      <h1 className="page-title">Research Grants</h1>
       {grants.length === 0 ? (
         <div className="no-grants">
           <p>No grants found. Please try again later.</p>
@@ -78,21 +69,20 @@ function ResearchGrants() {
         <div className="grants-container">
           {grants.map((grant) => (
             <div key={grant.id} className="grant-card">
-              <h2>{grant.name}</h2>
+              <div className="grant-header">
+                <h2>{grant.title}</h2>
+                <span className="match-score">{(grant.score * 100).toFixed(1)}% Match</span>
+              </div>
               <div className="grant-details">
                 <p><strong>Agency:</strong> {grant.agency}</p>
-                <p><strong>Open Date:</strong> {grant.openDate}</p>
-                <p><strong>Match Score:</strong> {(grant.score * 100).toFixed(1)}%</p>
+                <p><strong>Open Date:</strong> {grant.open_date}</p>
+                <p><strong>Description:</strong> {grant.description}</p>
               </div>
-              <p className="grant-description">{grant.description}</p>
-              <a 
-                href={grant.link} 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="grant-link"
-              >
-                View Grant Details
-              </a>
+              <div className="grant-actions">
+                <a href={grant.url} target="_blank" rel="noopener noreferrer" className="view-grant-button">
+                  View Full Details
+                </a>
+              </div>
             </div>
           ))}
         </div>
