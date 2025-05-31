@@ -9,8 +9,10 @@ function FindGroups() {
   useEffect(() => {
     const fetchMatchedUsers = async () => {
       try {
+        console.log('Starting to fetch matched users...');
+        
         // First, run the pairUsers.js script
-        console.log('Attempting to run pairUsers.js...');
+        console.log('Running pairUsers.js...');
         const response = await fetch('http://localhost:3001/api/run-pair-users', {
           method: 'POST',
           headers: {
@@ -20,14 +22,14 @@ function FindGroups() {
         
         console.log('Server response status:', response.status);
         const data = await response.json();
-        console.log('Server response data:', data);
+        console.log('Server response:', data);
         
         if (!response.ok) {
           throw new Error(data.error || 'Failed to run pairUsers.js');
         }
 
         // Then fetch the updated matched users data
-        console.log('Fetching matched users data...');
+        console.log('Fetching matched_users.json...');
         const usersResponse = await fetch('/data/matched_users.json');
         console.log('Users response status:', usersResponse.status);
         
@@ -37,6 +39,11 @@ function FindGroups() {
         
         const usersData = await usersResponse.json();
         console.log('Matched users data:', usersData);
+        
+        if (!Array.isArray(usersData)) {
+          throw new Error('Invalid data format: expected an array of users');
+        }
+
         setMatchedUsers(usersData);
         setLoading(false);
       } catch (err) {
@@ -76,23 +83,26 @@ function FindGroups() {
 
   return (
     <div className="find-groups-page">
-      <h1>Potential Collaborators</h1>
+      <h1 className="page-title">Potential Collaborators</h1>
       {matchedUsers.length === 0 ? (
         <div className="no-matches">
           <p>No matches found. Try updating your profile or check back later.</p>
         </div>
       ) : (
         <div className="matches-container">
-          {matchedUsers.map((match) => (
-            <div key={match.id} className="match-card">
+          {matchedUsers.map((match, index) => (
+            <div key={index} className="match-card">
               <div className="match-header">
-                <h2>{match.name}</h2>
+                <h2>{match.name || 'Anonymous User'}</h2>
                 <span className="match-score">{(match.score * 100).toFixed(1)}% Match</span>
               </div>
               <div className="match-details">
-                <p><strong>Interest Area:</strong> {match.interest_area}</p>
-                <p><strong>Problem Focus:</strong> {match.problem_focus}</p>
-                <p><strong>Project Goal:</strong> {match.project_goal}</p>
+                <p><strong>Interest Area:</strong> {match.interest_area || 'Not specified'}</p>
+                <p><strong>Problem Focus:</strong> {match.problem_focus || 'Not specified'}</p>
+                <p><strong>Project Goal:</strong> {match.project_goal || 'Not specified'}</p>
+                {match.skills && (
+                  <p><strong>Skills:</strong> {match.skills.join(', ')}</p>
+                )}
               </div>
               <div className="match-actions">
                 <button className="connect-button">Connect</button>

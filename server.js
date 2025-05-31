@@ -122,20 +122,25 @@ app.post('/api/run-pair-users', (req, res) => {
     }
 
     try {
+      // Read the output file
+      const fileContents = fs.readFileSync(outputPath, 'utf8');
+      const jsonData = JSON.parse(fileContents);
+
+      // Validate the data structure
+      if (!Array.isArray(jsonData)) {
+        throw new Error('Invalid data format: expected an array of users');
+      }
+
       // Copy the output file to the public directory
       fs.copyFileSync(outputPath, publicOutputPath);
       console.log('Successfully copied matched_users.json to public directory');
-      
-      // Read the file to verify its contents
-      const fileContents = fs.readFileSync(publicOutputPath, 'utf8');
-      const jsonData = JSON.parse(fileContents);
       
       res.json({ 
         message: 'Script executed successfully',
         data: jsonData
       });
     } catch (copyError) {
-      console.error('Error copying or reading output file:', copyError);
+      console.error('Error processing output file:', copyError);
       return res.status(500).json({ 
         error: 'Failed to process output file',
         details: copyError.message
