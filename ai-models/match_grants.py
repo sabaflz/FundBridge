@@ -14,7 +14,7 @@ user_text = " ".join([
 
 # === Load metadata and descriptions ===
 METADATA_FILE = "../src/data/grants.json"
-DESCRIPTIONS_FILE = "../src/data/grants_details_demo.json"
+DESCRIPTIONS_FILE = "../src/data/grant_details_demo.json"
 
 with open(METADATA_FILE, "r") as f:
     metadata = json.load(f)

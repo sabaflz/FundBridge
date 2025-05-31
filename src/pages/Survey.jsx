@@ -6,6 +6,7 @@ const questionGroups = [
     { key: 'fullName', label: 'Full Name', type: 'text', required: true },
     { key: 'email', label: 'Email Address', type: 'email', required: true },
     { key: 'country', label: 'Country/Location', type: 'text', required: true },
+    { key: 'password', label: 'password', type: 'text', required: true },
   ],
   [
     {
@@ -167,7 +168,7 @@ const questionGroups = [
 ];
 
 const initialFormData = {
-  fullName: '', email: '', country: '', currentRole: '', otherRole: '',
+  fullName: '', email: '', country: '', password: '', currentRole: '', otherRole: '',
   skills: [], otherSkills: '', hasCollaborated: '', projectDescription: '',
   canLead: '', wantsToPropose: '', projectTitle: '', projectIdea: '',
   fundingNeeded: '', idealTeammates: '', interests: [], otherInterests: '',
