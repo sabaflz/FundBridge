@@ -10,12 +10,22 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
-// Configure CORS
+// Configure CORS with more detailed options
 app.use(cors({
-  origin: 'http://localhost:5173', // Vite's default port
-  methods: ['GET', 'POST'],
-  credentials: true
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
+
+// Add error handling for CORS preflight
+app.options('*', cors());
+
+// Add request logging
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  next();
+});
 
 app.use(express.json());
 app.use(express.static('public'));
@@ -24,6 +34,7 @@ app.use(express.static('public'));
 const dataDir = join(__dirname, 'public', 'data');
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir, { recursive: true });
+  console.log('Created data directory:', dataDir);
 }
 
 app.post('/api/run-match-grants', (req, res) => {
@@ -91,9 +102,11 @@ app.post('/api/run-match-grants', (req, res) => {
   });
 });
 
-// Endpoint to run pairUsers.js
+// Endpoint to run pairUsers.py
 app.post('/api/run-pair-users', (req, res) => {
-  const scriptPath = join(__dirname, 'pairUsers.js');
+  console.log('Received request to run pairUsers.py');
+  
+  const scriptPath = join(__dirname, 'pairUsers.py');
   const outputPath = join(__dirname, 'matched_users.json');
   const publicOutputPath = join(__dirname, 'public', 'data', 'matched_users.json');
 
@@ -106,11 +119,16 @@ app.post('/api/run-pair-users', (req, res) => {
   console.log('Current working directory:', process.cwd());
   console.log('Running script:', scriptPath);
 
-  exec(`node ${scriptPath}`, (error, stdout, stderr) => {
+  // Run the Python script
+  exec(`python3 "${scriptPath}"`, (error, stdout, stderr) => {
     if (error) {
       console.error('Error executing script:', error);
       console.error('Script stderr:', stderr);
-      return res.status(500).json({ error: 'Failed to run script' });
+      return res.status(500).json({ 
+        error: 'Failed to run script',
+        details: error.message,
+        stderr: stderr
+      });
     }
 
     console.log('Script stdout:', stdout);
@@ -149,9 +167,19 @@ app.post('/api/run-pair-users', (req, res) => {
   });
 });
 
+// Add error handling middleware
+app.use((err, req, res, next) => {
+  console.error('Server error:', err);
+  res.status(500).json({ 
+    error: 'Internal server error',
+    details: err.message
+  });
+});
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Current working directory: ${__dirname}`);
   console.log(`Public data directory: ${dataDir}`);
+  console.log('CORS enabled for:', ['http://localhost:5173', 'http://127.0.0.1:5173']);
 });

@@ -9,35 +9,16 @@ function FindGroups() {
   useEffect(() => {
     const fetchMatchedUsers = async () => {
       try {
-        console.log('Starting to fetch matched users...');
+        console.log('Fetching matched users data...');
         
-        // First, run the pairUsers.js script
-        console.log('Running pairUsers.js...');
-        const response = await fetch('http://localhost:3001/api/run-pair-users', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-        
-        console.log('Server response status:', response.status);
-        const data = await response.json();
-        console.log('Server response:', data);
+        // Fetch matched users data directly
+        const response = await fetch('/data/matched_users.json');
         
         if (!response.ok) {
-          throw new Error(data.error || 'Failed to run pairUsers.js');
+          throw new Error('Failed to fetch matched users data');
         }
 
-        // Then fetch the updated matched users data
-        console.log('Fetching matched_users.json...');
-        const usersResponse = await fetch('/data/matched_users.json');
-        console.log('Users response status:', usersResponse.status);
-        
-        if (!usersResponse.ok) {
-          throw new Error(`Failed to fetch matched users data: ${usersResponse.status} ${usersResponse.statusText}`);
-        }
-        
-        const usersData = await usersResponse.json();
+        const usersData = await response.json();
         console.log('Matched users data:', usersData);
         
         if (!Array.isArray(usersData)) {
@@ -47,8 +28,8 @@ function FindGroups() {
         setMatchedUsers(usersData);
         setLoading(false);
       } catch (err) {
-        console.error('Error details:', err);
-        setError(err.message || 'An unexpected error occurred');
+        console.error('Error fetching matched users:', err);
+        setError(err.message);
         setLoading(false);
       }
     };
@@ -60,7 +41,7 @@ function FindGroups() {
     return (
       <div className="loading">
         <h2>Finding Matches</h2>
-        <p>Please wait while we analyze and match you with potential collaborators...</p>
+        <p>Please wait while we load potential collaborators...</p>
       </div>
     );
   }
@@ -70,7 +51,6 @@ function FindGroups() {
       <div className="error">
         <h2>Error</h2>
         <p>{error}</p>
-        <p>Please make sure the server is running and try again.</p>
         <button 
           className="retry-button"
           onClick={() => window.location.reload()}

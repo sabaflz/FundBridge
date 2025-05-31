@@ -33,8 +33,31 @@ const matchedUsers = [
   }
 ];
 
-// Write the data to matched_users.json
-const outputPath = path.join(__dirname, 'matched_users.json');
-fs.writeFileSync(outputPath, JSON.stringify(matchedUsers, null, 2));
+// Define paths
+const rootDir = __dirname;
+const outputPath = path.join(rootDir, 'matched_users.json');
+const publicOutputPath = path.join(rootDir, 'public', 'data', 'matched_users.json');
 
-console.log('Successfully generated matched_users.json'); 
+console.log('Current directory:', rootDir);
+console.log('Writing to:', outputPath);
+console.log('Public path:', publicOutputPath);
+
+try {
+  // Write to root directory
+  fs.writeFileSync(outputPath, JSON.stringify(matchedUsers, null, 2));
+  console.log('Successfully wrote to:', outputPath);
+
+  // Ensure public/data directory exists
+  const publicDataDir = path.join(rootDir, 'public', 'data');
+  if (!fs.existsSync(publicDataDir)) {
+    fs.mkdirSync(publicDataDir, { recursive: true });
+    console.log('Created directory:', publicDataDir);
+  }
+
+  // Copy to public directory
+  fs.copyFileSync(outputPath, publicOutputPath);
+  console.log('Successfully copied to:', publicOutputPath);
+} catch (error) {
+  console.error('Error writing files:', error);
+  process.exit(1);
+} 
