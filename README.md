@@ -2,6 +2,12 @@
 
 FundBridge is a web application that helps researchers find and match with relevant research grants and potential collaborators. The platform uses AI to match researchers with suitable grants based on their interests and project goals.
 
+## Demo
+
+https://youtu.be/c1nn_fmKLOU
+
+<!-- *Note: Replace the above URL with your actual video URL once you've uploaded it to GitHub or another platform.* -->
+
 ## Features
 
 - **User Registration & Authentication**: Secure sign-up and sign-in functionality
