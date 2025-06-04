@@ -4,9 +4,9 @@ FundBridge is a web application that helps researchers find and match with relev
 
 ## Demo
 
-https://youtu.be/c1nn_fmKLOU
+[![FundBridge Demo](https://img.youtube.com/vi/c1nn_fmKLOU/0.jpg)](https://youtu.be/c1nn_fmKLOU)
 
-<!-- *Note: Replace the above URL with your actual video URL once you've uploaded it to GitHub or another platform.* -->
+*Click the image above to watch the demo video*
 
 ## Features
 
